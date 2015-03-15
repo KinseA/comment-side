@@ -1,0 +1,64 @@
+.medium-insert-images {
+    text-align: center;
+    figure {
+         margin: 0;
+         display: block; 
+         img {
+             max-width: 100%;
+             margin-top: 1em;
+             vertical-align: top; 
+         }
+         &:first-child {
+             img {
+                 margin-top: 0;
+             }
+         }
+    }
+    &.medium-insert-images-left {
+        max-width: 33.33%;
+        float: left;
+        margin: 0 30px 20px 0;
+    }
+    &.medium-insert-images-right {
+        max-width: 33.33%;
+        float: right;
+        margin: 0 0 20px 30px;
+    }
+    &.medium-insert-images-grid {
+        margin: -0.5em;
+        figure {
+            width: 33.33%;
+            display: inline-block;
+            img {
+                max-width: calc(100% - 1em);
+                margin: 0.5em;
+            }
+        }
+    }
+}
+
+.medium-insert-embeds {
+    text-align: center;
+    margin: 1em 0;
+    iframe {
+        margin: 0 auto;
+    }
+    div {
+        margin: 0 auto;
+    }
+}
+
+
+// Backwards copatibility with v0.*
+
+.mediumInsert {
+    @extend .medium-insert-images;
+}
+
+.mediumInsert.small {
+    @extend .medium-insert-images.medium-insert-images-left;
+}
+
+.mediumInsert-embeds {
+    @extend .medium-insert-embeds;
+}

@@ -1,0 +1,85 @@
+/*
+Hubbubb Orange: #EF6831;
+Dark Grey: #3c3c3c
+Light Grey: #606e71
+Almost white: #cccccc
+*/
+
+.medium-toolbar-arrow-under:after {
+  top: 50px;
+  border-color: #EF6831 transparent transparent transparent; }
+
+.medium-toolbar-arrow-over:before {
+  top: -8px;
+  border-color: transparent transparent #EF6831 transparent; }
+
+.medium-editor-toolbar {
+  border: 2px solid #EF6831;
+  background-color: #fff;
+  border-radius: 5px;
+}
+
+  .medium-editor-toolbar li button {
+    min-width: 50px;
+    height: 50px;
+    border: 0;
+    /*border-right: 1px solid #000;
+    border-left: 1px solid #333;
+    border-left: 1px solid rgba(255, 255, 255, 0.1);*/
+    color: #3c3c3c;
+    background-color:#fff;
+    -webkit-transition: background-color .1s ease-in;
+            transition: background-color .1s ease-in; }
+    .medium-editor-toolbar li button:hover {
+      background-color: #6d6e71;
+      color: #EF6831; }
+  .medium-editor-toolbar li .medium-editor-button-first {
+    border-top-left-radius: 5px;
+    border-bottom-left-radius: 5px; }
+  .medium-editor-toolbar li .medium-editor-button-last {
+    border-top-right-radius: 5px;
+    border-bottom-right-radius: 5px; }
+  .medium-editor-toolbar li .medium-editor-button-active {
+    background-color: #6d6e71;
+    color: #fff;
+    }
+
+.medium-editor-toolbar-form {
+  background: #242424;
+  color: #999;
+  border-radius: 5px; }
+
+#medium-editor-toolbar-form-anchor-1 a,#medium-editor-toolbar-form-anchor-1{
+  background:#fff;
+  color:#242424;
+}
+
+#medium-editor-toolbar-form-anchor-1 a{
+  border-left:1px solid #242424;
+  padding-left:10px;
+  padding-right:10px;
+
+  margin:0;
+}
+
+#medium-editor-toolbar-form-anchor-1 a:hover{
+  color:#EF6831;
+}
+
+.medium-editor-toolbar-form .medium-editor-toolbar-input {
+    height: 50px;
+    
+    color: #ccc;
+    box-sizing: border-box; }
+  .medium-editor-toolbar-form a {
+    color: #fff; }
+
+.medium-editor-toolbar-anchor-preview {
+  background: #fff;
+  border:2px solid #EF6831;
+  color: #3c3c3c;
+  border-radius: 3px; }
+
+.medium-editor-placeholder:after {
+  color: #b3b3b1; }
+
