@@ -16,7 +16,11 @@
 <link rel="stylesheet" href="css/base.css" />
 <link rel="stylesheet" href="css/style.css" />
 <link href='http://fonts.googleapis.com/css?family=Noto+Sans' rel='stylesheet' type='text/css'>
-
+<script>
+function closeIt(){
+    document.getElementById('sidebar').style.opacity = 0;
+}
+</script>
 </head>
 
 
@@ -47,7 +51,7 @@
     </header>
 
 <nav class="menu slide-menu-right" id="sidebar">
-    <button class="close-menu" onclick="close()">Close</button>
+    <button class="close-menu" onclick="closeIt();">Close</button>
     <ul id="men">
         <li><a href="#">George Hook ‏@ghook  18m18 minutes ago<br>
             Will we all be on a drug-induced high for the next 48 hours? Chris Luke is taking me through the drugs that are (temporarily) legal</a></li>
@@ -163,10 +167,6 @@ Yet it took a further seven years before it would come before the people for a v
 
 function showRect(elem) {
     var r = elem.getBoundingClientRect()
-}
-
-function close(){
-    document.getElementById('sidebar').style.opacity = "0";
 }
 
 function alignMenu(){
