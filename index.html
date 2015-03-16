@@ -1,0 +1,201 @@
+<!DOCTYPE html>
+<html lang="en" class="no-js">
+
+<head>
+
+<!-- title and meta -->
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width,initial-scale=1.0" />
+<meta name="description" content="Slide and push menus that are initially hidden off screen, and transition into view with CSS transitions." />
+<title>Slide And Push Menus With CSS3 Transitions</title>
+    
+<!-- css -->
+<link href='http://fonts.googleapis.com/css?family=Open+Sans:400italic,600italic,700italic,400,600,700' rel='stylesheet' type='text/css'>
+<link href='http://fonts.googleapis.com/css?family=Bitter:400,700' rel='stylesheet' type='text/css'>
+<link rel="stylesheet" href="css/font-awesome/font-awesome.css">
+<link rel="stylesheet" href="css/base.css" />
+<link rel="stylesheet" href="css/style.css" />
+<link href='http://fonts.googleapis.com/css?family=Noto+Sans' rel='stylesheet' type='text/css'>
+
+</head>
+
+
+
+<body>
+
+
+<!--<nav class="menu push-menu-right">
+    <ul>
+        <li><button class="close-menu">Close &rarr;</button></li>
+        <li><a href="#">Broccoli</a></li>
+        <li><a href="#">Tomato</a></li>
+        <li><a href="#">Cucumber</a></li>
+        <li><a href="#">Kale</a></li>
+        <li><a href="#">Celery</a></li>
+    </ul>
+</nav> /push menu right -->
+
+
+<div id="wrapper">
+    
+    <header>
+        <div class="site-title">
+            <div class="container">
+                <h1>The Marriage Referendum</h1>
+            </div>
+        </div>
+    </header>
+
+<nav class="menu slide-menu-right" id="sidebar">
+    <button class="close-menu" onclick="close()">Close</button>
+    <ul id="men">
+        <li><a href="#">George Hook ‏@ghook  18m18 minutes ago<br>
+            Will we all be on a drug-induced high for the next 48 hours? Chris Luke is taking me through the drugs that are (temporarily) legal</a></li>
+        <li><a href="#">Limmy ‏@DaftLimmy  39m39 minutes ago<br>
+            Spending a couple of days in Ireland. Lovely place.</a></li>
+        <li><a href="#">Kootra ‏@Kootra  9m9 minutes ago<br>
+            Ok day, I am totally ready</a></li>
+        <li><a href="#">Ethan Browne ‏@Xenoire  33m33 minutes ago Dublin City, Ireland <br>
+            Cant wait to see the Tesco Value Ecstasy when I'm doing my shopping tomorrow</a></li>
+        <li><a href="#">Sean Defoe ‏@SeanDefoe  1h1 hour ago <br>
+            #YokeGate is ridiculous</a></li>
+    </ul>
+</nav><!-- /slide menu right -->
+
+    <div id="main">
+        <div class="container">
+            
+            
+
+            <section class="content" id="text">
+
+
+                <h1>A look back over how we got here and why</h1>
+
+                <div class="buttons">
+                <button class="nav-toggler toggle-slide-right" onclick="showRect(this);alignMenu()">5</button>
+                <!-- <button class="nav-toggler toggle-push-right">Push Menu Right</button> -->
+                </div><!-- /buttons -->
+
+                <p>As recently as 21 years ago being gay in Ireland was illegal. There were calls for homosexual acts to be  decriminalised for years but the road to actual legislation began in the courts in 1977.
+
+                    Senator David Norris took a case to the High Court which was rejected in 1980. It was then rejected by the Supreme Court in 1983 before Norris took his case to the European Court of Human Rights. 
+
+                    The European judges ruled that the Irish laws contravened the Convention on Human Rights. Five years later those laws were changed.</p>
+
+                <div class="buttons">
+                <button class="nav-toggler toggle-slide-right1" onclick="showRect(this);alignMenu1()">5</button>
+                <!-- <button class="nav-toggler toggle-push-right">Push Menu Right</button> -->
+                </div><!-- /buttons -->
+
+
+                <p>Decriminalisation preceded a series of other social reforms in Ireland, including the Divorce Referendum. 
+
+                    The 1990s was a time of huge social change. Many believe that the introduction of the 1996 Family Law (Divorce) Act was a defining moment which demonstrated how the Irish people were ready to put some distance between the Catholic Church and the state. 
+
+                    During the build up to this referendum the levels of support for another social change have</p>
+
+                <div class="buttons">
+                <button class="nav-toggler toggle-slide-right2" onclick="showRect(this);alignMenu2()">5</button>
+                <!-- <button class="nav-toggler toggle-push-right">Push Menu Right</button> -->
+                </div><!-- /buttons -->
+
+                <p>Decriminalisation preceded a series of other social reforms in Ireland, including the Divorce Referendum. 
+
+The 1990s was a time of huge social change. Many believe that the introduction of the 1996 Family Law (Divorce) Act was a defining moment which demonstrated how the Irish people were ready to put some distance between the Catholic Church and the state.</p>
+
+                <div class="buttons">
+                <button class="nav-toggler toggle-slide-right3" onclick="showRect(this);alignMenu3()">5</button>
+                <!-- <button class="nav-toggler toggle-push-right">Push Menu Right</button> -->
+                </div><!-- /buttons -->
+
+                <p>During the build up to this referendum the levels of support for another social change have changed drastically, even in the short time since the Divorce Referendum was held.
+
+Most polls building up to the gay marriage vote have indicated that it will comfortably pass. An Ipsos/MRBI poll for The Irish Times in December suggested that 71% of people would vote in favour of gay marriage. While a Red C poll in January this year said 76% will vote yes. 
+
+In comparison the divorce referendum passed by just over nine thousand votes - failing in most rural areas. Dublin has always had more liberal voting patterns, however now people in the countryside seem to be embracing change more readily. 
+
+The Red C poll from January indicated 84% of people in Dublin were in favour of gay marriage, but also showed that 80% of those in Connacht and Ulster would vote yes.</p>
+
+                <div class="buttons">
+                <button class="nav-toggler toggle-slide-right4" onclick="showRect(this);alignMenu4()">5</button>
+                <!-- <button class="nav-toggler toggle-push-right">Push Menu Right</button> -->
+                </div><!-- /buttons -->
+
+                <p>From decriminalisation to a referendum on marriage equality, many things have changed over the past 21 years. 
+
+In 2010 the Civil Partnership and Certain Rights and Obligations of Cohabitants Act was passed. It made it possible for those in same sex relationships to enter into civil partnerships. It was a game changer, with the first ceremonies taking place in the Spring of 2011.
+
+By 2012 a civil partnership had taken place in every county in Ireland. However some viewed the act as simply a stepping stone towards full marriage equality. 
+
+Various LGBT groups state that there is still work to be done to reach their ultimate goal of equality for same sex couples and their families.</p>
+
+                <div class="buttons">
+                <button class="nav-toggler toggle-slide-right5" onclick="showRect(this);alignMenu5()">5</button>
+                <!-- <button class="nav-toggler toggle-push-right">Push Menu Right</button> -->
+                </div><!-- /buttons -->
+
+                <p>As was the case in the Divorce Referendum changing social attitudes played a significant role in bringing the Marriage Referendum about.
+Interestingly a 2008 Millward Brown poll revealed that 81% of people agreed that everyone in Ireland should receive equal treatment from the state, regardless of their sexual orientation. 
+Yet it took a further seven years before it would come before the people for a vote. </p>
+                
+            </section>
+
+        </div>
+    </div><!-- #main -->
+
+
+    <footer>
+        <div class="container">
+            <div class="clearfix">
+                
+            </div>
+
+        </div>
+    </footer><!-- /footer -->
+
+</div><!-- /#wrapper -->
+
+<!-- js -->
+<script src="js/classie.js"></script>
+<script src="js/nav.js"></script>
+<script type="text/javascript">
+
+function showRect(elem) {
+    var r = elem.getBoundingClientRect()
+}
+
+function close(){
+    document.getElementById('sidebar').style.opacity = "0";
+}
+
+function alignMenu(){
+    document.getElementById('sidebar').style.paddingTop = "25px";
+    document.getElementById('sidebar').style.opacity = "100";
+}
+
+function alignMenu1(){
+    document.getElementById('sidebar').style.paddingTop = "280px"
+    document.getElementById('sidebar').style.opacity = "100";
+}
+function alignMenu2(){
+    document.getElementById('sidebar').style.paddingTop = "500px"
+    document.getElementById('sidebar').style.opacity = "100";
+}
+function alignMenu3(){
+    document.getElementById('sidebar').style.paddingTop = "700px"
+    document.getElementById('sidebar').style.opacity = "100"
+}
+function alignMenu4(){
+    document.getElementById('sidebar').style.paddingTop = "1070px"
+    document.getElementById('sidebar').style.opacity = "100";
+}
+function alignMenu5(){
+    document.getElementById('sidebar').style.paddingTop = "1370px"
+    document.getElementById('sidebar').style.opacity = "100";
+}
+
+</script>
+
+</body>
+</html>
