@@ -61,6 +61,11 @@
 				?>
 				<button onclick="testhighlightText()"></button>
 			</div>
+			<div id="c-response">
+				<button id="agree-<?php echo $article->unique_id; ?>" class="agree" role="up" dataType="a" onclick="vote(this)">Agree</button>
+				<button id="disagree-<?php echo $article->unique_id; ?>" class="disagree" role="down" dataType="a" onclick="vote(this)">Disagree</button>
+				<a href="<?php echo Request::root(); ?>/opinion/create/<?php echo $article->slug; ?>-<?php echo $article->unique_id; ?>">Add a response</a>
+			</div>
 		</article>
 			<?php
 	?>
@@ -201,18 +206,42 @@
 		
 
 		comment+='<div class="flag">';
-		comment+='<input id="flag-'+c['c_id']+'" onclick="flag(this)" role="flag" type="button" class="flag '+(flagged ? 'flagged' : '')+'">'
+		comment+='<input id="flag-'+c['c_id']+'" onclick="flag(this)" role="flag" dataType="c" type="button" class="flag '+(flagged ? 'flagged' : '')+'">'
 		comment+='</div>';
 		if(show=='hidden'){
 			comment += '<span class="comment-warning">This comment has been flagged click <a id="'+c['c_id']+'" onclick="showComment(this.id)"> here </a></span>';
 		}
 		comment+='<div class="comment '+show+'"><div class="comment-author"><a href="<?php echo Request::root(); ?>/profile/'+c['username']+'">'+c['username']+'</a></div><div class="comment-text">'+c['comment_text']+'</div><div class="voting">';
-			comment+='<button id="upvote-'+c['c_id']+'" class="upvote '+(vote==1 ? 'active' : '')+'" role="up" onclick="vote(this)">agree '+c['votes']['up'].length+' </button>';
-		comment+='<button id="downvote-'+c['c_id']+'" class="downvote '+(vote==2 ? 'active' : '')+'" role="down" onclick="vote(this)">disagree '+c['votes']['down'].length+' </button>';
+			comment+='<button id="upvote-'+c['c_id']+'" class="upvote '+(vote==1 ? 'active' : '')+'" role="up" dataType="c" onclick="vote(this)">agree '+c['votes']['up'].length+' </button>';
+		comment+='<button id="downvote-'+c['c_id']+'" class="downvote '+(vote==2 ? 'active' : '')+'" role="down" dataType="c" onclick="vote(this)">disagree '+c['votes']['down'].length+' </button>';
 		comment+='</div></div></div>';
 
 		return comment;
 	}
+
+	function prepareArticleVotes(){
+		var c = <?php print_r(json_encode(Votes::getVotes($article->unique_id))); ?>;
+		var show,flagged,vote;
+		show='visible';
+
+		if(c['flags'].length >= 5){
+			show='hidden';
+		}
+
+		if((c['user'].indexOf(1)) > -1){
+			vote=1;
+		}
+
+		if(c['user'].indexOf(2) > -1){
+			vote=2;
+		}
+
+		
+
+		console.log(vote);
+	}
+
+	prepareArticleVotes()
 
 	function addComment(p_id){
 		var formData=[];
@@ -268,39 +297,76 @@
 		var comment_id = id.substring(id.indexOf('-') + 1, id.length);
 		var elem=$('#'+id);
 		var role=elem.attr('role');
+		var d=elem.attr('dataType');
 		
 		$.ajax({
 		  type: "POST",
 		  url: "<?php echo Request::root(); ?>/ajax/interaction/vote",
 		  data: { 
+		  	dataType: d,
 		  	comment_id: comment_id, 
 		  	type: role 
 			}
 		}).done(function( msg ) {
 		    msg=JSON.parse(msg);
-			if(msg['removed'].indexOf(1)>-1){
-				//removed an agree
-				if($('#upvote-'+comment_id).hasClass('active')){
-					$('#upvote-'+comment_id).removeClass('active');
+		    console.log(msg);
+		    if(msg['dataType']=='c'){
+		    	if(msg['removed'].indexOf(1)>-1){
+					//removed an agree
+					var elem = $('#upvote-'.comment_id);
+					if(elem.hasClass('active')){
+						elem.removeClass('active');
+					}
+				}else if(msg['removed'].indexOf(2)>-1){
+					//removed a disagree
+					var elem = $('#downvote-'.comment_id);
+					if(elem.hasClass('active')){
+						elem.removeClass('active');
+					}
 				}
-			}else if(msg['removed'].indexOf(2)>-1){
-				//removed a disagree
-				if($('#downvote-'+comment_id).hasClass('active')){
-					$('#downvote-'+comment_id).removeClass('active');
-				}
-			}
 
-			if(msg['added'].indexOf(1)>-1){
-				//removed an agree
-				if(!$('#upvote-'+comment_id).hasClass('active')){
-					$('#upvote-'+comment_id).addClass('active');
+				if(msg['added'].indexOf(1)>-1){
+					//removed an agree
+					var elem = $('#upvote-'.comment_id);
+					if(!elem.hasClass('active')){
+						elem.addClass('active');
+					}
+				}else if(msg['added'].indexOf(2)>-1){
+					//removed a disagree
+					var elem = $('#downvote-'.comment_id);
+					if(!elem.hasClass('active')){
+						elem.addClass('active');
+					}
 				}
-			}else if(msg['added'].indexOf(2)>-1){
-				//removed a disagree
-				if(!$('#downvote-'+comment_id).hasClass('active')){
-					$('#downvote-'+comment_id).addClass('active');
+		    }else if(msg['dataType']=='a'){
+		    	if(msg['removed'].indexOf(1)>-1){
+					//removed an agree
+					var elem = $('#agree-'.comment_id);
+					if(elem.hasClass('active')){
+						elem.removeClass('active');
+					}
+				}else if(msg['removed'].indexOf(2)>-1){
+					//removed a disagree
+					var elem = $('#disagree-'.comment_id);
+					if(elem.hasClass('active')){
+						elem.removeClass('active');
+					}
 				}
-			}
+
+				if(msg['added'].indexOf(1)>-1){
+					//removed an agree
+					var elem = $('#agree-'.comment_id);
+					if(!elem.hasClass('active')){
+						elem.addClass('active');
+					}
+				}else if(msg['added'].indexOf(2)>-1){
+					//removed a disagree
+					var elem = $('#disagree-'.comment_id);
+					if(!elem.hasClass('active')){
+						elem.addClass('active');
+					}
+				}
+		    }
 		    //updates accordingly
 		});
 		//checks type of vote by looking at the role attribute.

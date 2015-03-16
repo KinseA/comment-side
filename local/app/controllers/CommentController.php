@@ -75,7 +75,7 @@ class CommentController extends BaseController {
 			Votes::flag($input['comment_id']);
 		}elseif($input['type']=='up' || $input['type']== 'down' ){
 			$comment_code = $input['type']=='up' ? 1 : 2;
-			Votes::vote($input['comment_id'],$comment_code);
+			Votes::vote($input['comment_id'],$comment_code,$input['dataType']);
 		}
 		//check what the type is. If it's a flag then call the comment::flag() function
 

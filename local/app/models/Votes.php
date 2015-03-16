@@ -73,13 +73,18 @@ class Votes extends Eloquent {
 		}
 	}
 
-	public static function vote($comment,$code){
+	public static function vote($comment,$code,$dT){
 		$user=Session::get('user');
 		$upvotes=self::where('item_id','=',$comment)->where('user_id','=',$user)->where('vote_code','=',1)->count();
 		$downvotes=self::where('item_id','=',$comment)->where('user_id','=',$user)->where('vote_code','=',2)->count();
 		$return_array=array();
 		$return_array['removed']=array();
 		$return_array['added']=array();
+		$return_array['dataType']=$dT;
+		$type='comment';
+		if($dT=='a'){
+			$type='article';
+		}
 
 		if($code==1){
 			if($downvotes){
@@ -94,8 +99,9 @@ class Votes extends Eloquent {
 				array_push($return_array['added'], $code);
 				$flag=new Votes;
 				$flag->user_id = $user;
-				$flag->comment_id = $comment;
-				$flag->comment_code = $code;
+				$flag->item_id = $comment;
+				$flag->vote_code = $code;
+				$flag->type = $type;
 				$flag->save();
 			}
 		}elseif($code==2){
@@ -112,8 +118,8 @@ class Votes extends Eloquent {
 				array_push($return_array['added'], $code);
 				$flag=new Votes;
 				$flag->user_id = $user;
-				$flag->comment_id = $comment;
-				$flag->comment_code = $code;
+				$flag->item_id = $comment;
+				$flag->vote_code = $code;
 				$flag->save();
 			}
 		}
