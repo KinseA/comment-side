@@ -4,18 +4,7 @@ if(!Request::ajax()){
 		?>
 </div>
 </div>
-<style>
-#share-button {
-  background-color:white;
-  border:1px solid black;
-  padding:10px;
-  position:absolute;
-  top:-9999px;
-  left:-9999px;
-  z-index:9999;
-  box-shadow:0 1px 3px rgba(0,0,0,.4);
-}
-</style>
+
 <div id="share-button"><button>Share!</button></div>
 <script>
 var w = Math.max(document.documentElement.clientWidth, window.innerWidth || 0);
@@ -168,6 +157,7 @@ pages.push('p-1');
 		</button></li>
 		<li><button class="medium-editor-action"><i class="fa fa-comment"></i></button></li>
 	</ul>
+</div>
 </body>
 </html>
 <?php

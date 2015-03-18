@@ -71,62 +71,6 @@ function hasClass(element, cls) {
 }
 
 
-/*http://stackoverflow.com/questions/1222915/can-one-use-window-onscroll-method-to-include-detection-of-scroll-direction*/
-/*function scrollFunc(e) {
-    if ( typeof scrollFunc.x == 'undefined' ) {
-        scrollFunc.x=window.pageXOffset;
-        scrollFunc.y=window.pageYOffset;
-    }
-    var diffX=scrollFunc.x-window.pageXOffset;
-    var diffY=scrollFunc.y-window.pageYOffset;
-
-    if( diffX<0 ) {
-        // Scroll right
-    } else if( diffX>0 ) {
-        // Scroll left
-    } else if( diffY<0 ) {
-        console.log('down');
-        var userNav=$('#userNav');
-        var nav = $('#main-nav-container');
-        var navs=$('.nav');
-	    //nav.style.top= -nav.clientHeight - 30 + 'px';
-	    //userNav.style.top = -userNav.clientHeight + 'px';
-	    //Velocity(userNav, { top: -userNav.clientHeight + 'px' }, { duration: 1000 });
-        //Velocity(nav, { top: -nav.clientHeight - 30 + 'px' }, { duration: 1000 });
-        navs.velocity({
-        	top: -nav.height() -30 + 'px'
-        },{
-        	duration:500
-
-        });
-
-        //animate the nav into position
-    } else if( diffY>0 ) {
-        console.log('up');
-        //var userNav=document.getElementById('user-nav');
-        //var nav = document.getElementById('main-nav');
-        var userNav=$('#userNav');
-        var nav = $('#main-nav-container');
-        var navs=$('.nav');
-        //userNav.style.top = 0;
-        userNav.velocity({
-        	top: 0
-        },{
-        	duration:500
-        });
-
-        //navs.velocity('reverse');
-
-
-        
-        //nav.style.top= 0 + userNav.clientHeight + 'px';
-    } else {
-        // First scroll event
-    }
-    scrollFunc.x=window.pageXOffset;
-    scrollFunc.y=window.pageYOffset;
-}*/
-
 /*animation functions*/
 function showNav(){
 	console.log('show nav');
@@ -197,4 +141,114 @@ function loadPage(url){
 		delay:600,
 		easing:'ease-in-out'
 	});
+}
+
+function flag(comment){
+	//checks if has the class of 'flagged'. If it does then it deletes the flag
+	var id=comment.id;
+	var elem=$('#'+id);
+	if(!elem.hasClass('flagged') || true){
+		if(elem.attr('role')=='flag'){
+			$.ajax({
+			  type: "POST",
+			  url: "<?php echo Request::root(); ?>/ajax/interaction/vote",
+			  data: {
+				comment_id: elem.parent().parent().attr('id'),
+				type: elem.attr('role')
+				}
+			}).done(function( msg ) {
+			    if(msg=='removed'){
+			    	elem.removeClass('flagged');
+			    }else if(msg=='added'){
+			    	elem.addClass('flagged');
+			    }
+			    //updates accordingly
+			});
+		}
+	}
+	
+	return false;
+	//send to the server
+}
+
+function vote(comment){
+	var id=comment.id;
+	var comment_id = id.substring(id.indexOf('-') + 1, id.length);
+	var elem=$('#'+id);
+	var role=elem.attr('role');
+	var d=elem.attr('dataType');
+	
+	$.ajax({
+	  type: "POST",
+	  url: "<?php echo Request::root(); ?>/ajax/interaction/vote",
+	  data: { 
+	  	dataType: d,
+	  	comment_id: comment_id, 
+	  	type: role 
+		}
+	}).done(function( msg ) {
+	    msg=JSON.parse(msg);
+	    console.log(msg);
+	    if(msg['dataType']=='c'){
+	    	if(msg['removed'].indexOf(1)>-1){
+				//removed an agree
+				var elem = $('#upvote-'.comment_id);
+				if(elem.hasClass('active')){
+					elem.removeClass('active');
+				}
+			}else if(msg['removed'].indexOf(2)>-1){
+				//removed a disagree
+				var elem = $('#downvote-'.comment_id);
+				if(elem.hasClass('active')){
+					elem.removeClass('active');
+				}
+			}
+
+			if(msg['added'].indexOf(1)>-1){
+				//removed an agree
+				var elem = $('#upvote-'.comment_id);
+				if(!elem.hasClass('active')){
+					elem.addClass('active');
+				}
+			}else if(msg['added'].indexOf(2)>-1){
+				//removed a disagree
+				var elem = $('#downvote-'.comment_id);
+				if(!elem.hasClass('active')){
+					elem.addClass('active');
+				}
+			}
+	    }else if(msg['dataType']=='a'){
+	    	if(msg['removed'].indexOf(1)>-1){
+				//removed an agree
+				var elem = $('#agree-'.comment_id);
+				if(elem.hasClass('active')){
+					elem.removeClass('active');
+				}
+			}else if(msg['removed'].indexOf(2)>-1){
+				//removed a disagree
+				var elem = $('#disagree-'.comment_id);
+				if(elem.hasClass('active')){
+					elem.removeClass('active');
+				}
+			}
+
+			if(msg['added'].indexOf(1)>-1){
+				//removed an agree
+				var elem = $('#agree-'.comment_id);
+				if(!elem.hasClass('active')){
+					elem.addClass('active');
+				}
+			}else if(msg['added'].indexOf(2)>-1){
+				//removed a disagree
+				var elem = $('#disagree-'.comment_id);
+				if(!elem.hasClass('active')){
+					elem.addClass('active');
+				}
+			}
+	    }
+	    //updates accordingly
+	});
+	//checks type of vote by looking at the role attribute.
+	return false;
+	//sends to database
 }
