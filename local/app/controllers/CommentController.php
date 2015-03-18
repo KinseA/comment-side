@@ -85,4 +85,8 @@ class CommentController extends BaseController {
 		//remove classes if appropriate. Update vote count if appropriate. 
 	}
 
+	public function getCount($pid,$aid){
+		print_r(Comment::getCount($pid,$aid));
+	}
+
 }

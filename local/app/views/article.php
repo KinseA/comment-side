@@ -79,6 +79,14 @@
 	<script>
 	var interval;
 	var commentBoxes = document.getElementsByClassName('comment-box');
+	var aid = '<?php echo $article->unique_id; ?>';
+	var paragraphs = [];
+
+	if(window.location.hash) {
+	  // Fragment exists
+	} else {
+	  // Fragment doesn't exist
+	}
 
 	//reset comment box values
 	for(var i=0;i<commentBoxes.length;i++){
@@ -94,14 +102,37 @@
 		for(var i=0;i<paragraphs.length;i++){
 			paragraphs[i].style.position = "relative";
 			button = document.createElement('button');
-			button.innerHTML = "press me"+i;
+			var ident = 'button-'+paragraphs[i].id;
+			button.id = ident;
+			$.ajax({
+			    type: "GET",
+			    url: "<?php echo Request::root(); ?>/ajax/comment/getCount/"+paragraphs[i].id+"/"+aid,
+			    async: false,
+			    data: parms,
+			    dataType: "json",
+			    success: function (data) {
+			        $("#rdy_msg").text("Completed: " + id);
+			    },
+			    error: function () {
+			        var cdefg = data;
+			    }
+			});
+			
 			paragraphs[i].appendChild(button);
 			button.style.position = "absolute";
 			button.style.right=-(button.clientWidth+10)+'px';
 			button.style.top=0;
 			button.setAttribute('class','comment-button');
 			button.setAttribute('onClick','openComments(this)');
+			button.setAttribute('onLoad','addCount(this)');
 		}
+	}
+
+	function addCount(element){
+		var para_id = element.parentNode.id;
+		$.get( "<?php echo Request::root(); ?>/ajax/comment/getCount/"+para_id+"/"+aid, function( data ) {
+		  element.innerHTML = data;
+		});
 	}
 
 	function showReplies(comment_id){
@@ -313,85 +344,100 @@
 			//cycle trough the content of all of them (check if the childNode is text or not)
 			//wrap the text and subtract the length
 			var elem = document.getElementById(id);
-			preWrapText(start,end,elem,0,id);
+			//preWrapText(start,end,elem,0,id);
+			selectAndHighlightRange(id, start, end);
 		}
 	}
 
-	function preWrapText(s,e,elem,p,id){
-		
-		var position = 0;
-		var start = s; //where position needs to be equal to to start
-		var end = e;
-		if(p){
-			position = p;
-		}
-		
-		
-		if(elem.childNodes.length > 0 && elem.nodeType !=3){ //recursion! //if has children, split it into it's respective elements. Use this function?
-			for(var i = 0; i<elem.childNodes.length;i++){
-				if(elem.childNodes[i].nodeName != 'BUTTON'){
-					//check if has children. 
-					position=preWrapText(start,end,elem.childNodes[i],position,id);
+	function getTextNodesIn(node) {
+    var textNodes = [];
+    if (node.nodeType == 3) {
+        textNodes.push(node);
+    } else {
+        var children = node.childNodes;
+        for (var i = 0, len = children.length; i < len; ++i) {
+            textNodes.push.apply(textNodes, getTextNodesIn(children[i]));
+        }
+    }
+    return textNodes;
+}
 
-					
-				}
-				
-			}
-		
-				
-		}else{ //its a text node usually
-			var text = elem.textContent;
+//START http://stackoverflow.com/questions/6240139/highlight-text-range-using-javascript by Tim Down
+function setSelectionRange(el, start, end) {
+    if (document.createRange && window.getSelection) {
+        var range = document.createRange();
+        range.selectNodeContents(el);
+        var textNodes = getTextNodesIn(el);
+        var foundStart = false;
+        var charCount = 0, endCharCount;
 
-		
-			var clone = elem.cloneNode();
-			
-			if(position+text.length <= start+end){ //this node has some stuff needing changing!
-				/*if(position < (start+end)){ //ensures we're not already past the point
-					var leftString ='';
-					var string = '';
-					var rightString = '';
-					var element = document.getElementById(id);
-					var strToReplace = '';
-					//end is now length
-					if((start+end) > position && (position+start+end)>text.length){ //if the end of the string is somewhere in this node
-						
-						var starting = 0;
-						if(start<position){ //already started highlighting
-							starting=0; //being at start of node
-						}else{ //hasn't started highlighting
-							starting = start;
-						}	
-						strToReplace = text.substr(starting,end-position);
-						element.innerHTML=element.innerHTML.replace(strToReplace,'<span class="highlighted">'+strToReplace+'</span>');
-					}else{
-						if(start < position){
-							strToReplace = text;
-						}
-						element.innerHTML=element.innerHTML.replace(strToReplace,'<span class="highlighted">'+strToReplace+'</span>');
-					}
-				}*/
-				//check if the current node is to be all highlighted, no highlighted, or some highlighted. Filter out the no highlighted
-				//check which of these it fits into
-				//calculate where to start highlighting text
-				
-				//console.log('substr:'+(text.substr(start-position).length));
-				
-				//position = position + text.substr(start-position,end-start).length;
-			}
-			//this element needs to have part of it highlighted
-			//console.log(text.substr( start-position , end-start));
-			
-			//console.log('in funct: '+position);
-			
-			position = position + text.length;				
-		}
-		//console.log(position);
-		return position;
-	}
+        for (var i = 0, textNode; textNode = textNodes[i++]; ) {
+            endCharCount = charCount + textNode.length;
+            if (!foundStart && start >= charCount && (start < endCharCount || (start == endCharCount && i < textNodes.length))) {
+                range.setStart(textNode, start - charCount);
+                foundStart = true;
+            }
+            if (foundStart && end <= endCharCount) {
+                range.setEnd(textNode, end - charCount);
+                break;
+            }
+            charCount = endCharCount;
+        }
 
-	function wrapText(){
-		console.log('wrapping');
-	}
+        var sel = window.getSelection();
+        sel.removeAllRanges();
+        sel.addRange(range);
+    } else if (document.selection && document.body.createTextRange) {
+        var textRange = document.body.createTextRange();
+        textRange.moveToElementText(el);
+        textRange.collapse(true);
+        textRange.moveEnd("character", end);
+        textRange.moveStart("character", start);
+        textRange.select();
+    }
+}
+
+function makeEditableAndHighlight(colour) {
+    sel = window.getSelection();
+    if (sel.rangeCount && sel.getRangeAt) {
+        range = sel.getRangeAt(0);
+    }
+    document.designMode = "on";
+    if (range) {
+        sel.removeAllRanges();
+        sel.addRange(range);
+    }
+    // Use HiliteColor since some browsers apply BackColor to the whole block
+    if (!document.execCommand("HiliteColor", false, colour)) {
+        document.execCommand("BackColor", false, colour);
+    }
+    document.designMode = "off";
+}
+
+function highlight(colour) {
+    var range, sel;
+    if (window.getSelection) {
+        // IE9 and non-IE
+        try {
+            if (!document.execCommand("BackColor", false, colour)) {
+                makeEditableAndHighlight(colour);
+            }
+        } catch (ex) {
+            makeEditableAndHighlight(colour)
+        }
+    } else if (document.selection && document.selection.createRange) {
+        // IE <= 8 case
+        range = document.selection.createRange();
+        range.execCommand("BackColor", false, colour);
+    }
+}
+
+function selectAndHighlightRange(id, start, end) {
+    setSelectionRange(document.getElementById(id), start, end);
+    highlight("#000");
+}
+//END http://stackoverflow.com/questions/6240139/highlight-text-range-using-javascript by Tim Down
+
 
 	function removeHighlightText(code){
 		if(code){
@@ -405,10 +451,6 @@
 		cArray=new Array();
 		cArray=code.split('-');
 		return cArray;
-	}
-
-	function addCommentWithCode(sel){
-
 	}
 
 	function getSelectionCoords() {
@@ -486,22 +528,28 @@
 	};
 
 	function generateCode(sel){
+		$('#indicator .add-comment').attr('role','false');
 		if(sel || (window.getSelection() && window.getSelection()['type']=='Range')){
 	 		var element,start,end,selection,code;
 	 		selection = window.getSelection().getRangeAt(0);
 	 		//fragment=stripTags(fragment);
-	 		element = $('#'+getSelectionParentNode());
-	 		code = 'p_'+getSelectionParentNode();
+	 		var parentNode = getSelectionParentNode();
+	 		$('#indicator .add-comment').attr('role',parentNode);
+	 		element = $('#'+parentNode);
+	 		code = 'p_'+parentNode;
 	 		highlightedString=stripTags(getSelectionHTML());
 
 	 		start=stripTags(element.html()).search(highlightedString);
-			end = highlightedString.length;
+			end = start+highlightedString.length;
 			if((end+start) > (stripTags(element.html()).length)){
 				//add a warning about only being able to do to the length of the paragraph
 				end = stripTags(element.html()).length -1;
 			}
 			code += '-s_'+start+'-l_'+end;
-			highlightText(code);
+
+			return code;
+			
+			//do something with the code
 	 		//find in the element
 
 	 		//start = getSelectionStart();
@@ -564,7 +612,8 @@
 		  indicator.css('top',coord['y']-indicator.height()+'px');
 		  indicator.css('left',coord['x']+(coord['width']/4)-indicator.width()/2+'px');
 		  indicator.addClass('tooltip-active');
-		  generateCode(sel);
+		  
+		  highlightText(generateCode(sel));
 	  }else{
 	  	  indicator.css('position','absolute');
 		  indicator.css('top','-9999px');

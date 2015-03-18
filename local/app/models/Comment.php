@@ -55,4 +55,8 @@ class Comment extends Eloquent {
 		}
 	}
 
+	public static function getCount($p,$a){
+		return self::where('para_id','=',$p)->where('article_id','=',$a)->count();
+	}
+
 }

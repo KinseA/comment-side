@@ -41,6 +41,8 @@ Route::post('/ajax/comment/create','CommentController@submitComment');
 
 Route::get('/ajax/comment/get','CommentController@getComments');
 
+Route::get('/ajax/comment/getCount/{pid}/{aid}','CommentController@getCount');
+
 Route::get('/comment/get','CommentController@index');
 
 Route::post('/ajax/article','ArticleController@addArticle');
