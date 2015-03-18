@@ -229,6 +229,7 @@ body,html{
 	}
 
 	#featured{
+		margin-top: 2.6rem;
 		text-align:right;
 
 	}
@@ -495,10 +496,9 @@ body,html{
 
 
 	#user-nav{
-		width:50%;
+		width:100%;
 		top:0;
 		right:0;
-		background:none;
 		text-align:right;
 		color:#3c3c3c;
 	}
