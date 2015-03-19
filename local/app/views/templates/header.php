@@ -14,6 +14,7 @@ if(!Request::ajax()){
 	<link rel="stylesheet" href="<?php echo Request::root(); ?>/resources/css/hubbubb-main.css">
 	<link rel="stylesheet" href="<?php echo Request::root(); ?>/resources/medium/medium-editor/dist/css/medium-editor.min.css">
 	<script src="<?php echo Request::root(); ?>/resources/js/hubbubb-main.js"></script>
+	<script type="text/javascript" async src="//platform.twitter.com/widgets.js"></script>
 	<link href='http://fonts.googleapis.com/css?family=Noto+Sans|Noto+Serif:700' rel='stylesheet' type='text/css'>	
 </head>
 <body>

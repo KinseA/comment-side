@@ -80,13 +80,10 @@
 	var interval;
 	var commentBoxes = document.getElementsByClassName('comment-box');
 	var aid = '<?php echo $article->unique_id; ?>';
-	var paragraphs = [];
+	var savedCode = '';
+	var string = '';
 
-	if(window.location.hash) {
-	  // Fragment exists
-	} else {
-	  // Fragment doesn't exist
-	}
+
 
 	//reset comment box values
 	for(var i=0;i<commentBoxes.length;i++){
@@ -104,19 +101,17 @@
 			button = document.createElement('button');
 			var ident = 'button-'+paragraphs[i].id;
 			button.id = ident;
-			$.ajax({
+			/*$.ajax({
 			    type: "GET",
-			    url: "<?php echo Request::root(); ?>/ajax/comment/getCount/"+paragraphs[i].id+"/"+aid,
+			    url: "<?php //echo Request::root(); ?>/ajax/comment/getCount/"+paragraphs[i].id+"/"+aid,
 			    async: false,
-			    data: parms,
-			    dataType: "json",
 			    success: function (data) {
 			        $("#rdy_msg").text("Completed: " + id);
 			    },
 			    error: function () {
 			        var cdefg = data;
 			    }
-			});
+			});*/
 			
 			paragraphs[i].appendChild(button);
 			button.style.position = "absolute";
@@ -430,11 +425,13 @@ function highlight(colour) {
         range = document.selection.createRange();
         range.execCommand("BackColor", false, colour);
     }
+
+    $("span[style='background-color: rgba(239, 104, 49, 0.498039);']").addClass('highlighted');
 }
 
 function selectAndHighlightRange(id, start, end) {
     setSelectionRange(document.getElementById(id), start, end);
-    highlight("#000");
+    highlight("rgba(239,104,49,0.5)");
 }
 //END http://stackoverflow.com/questions/6240139/highlight-text-range-using-javascript by Tim Down
 
@@ -519,10 +516,10 @@ function selectAndHighlightRange(id, start, end) {
 	document.onmousedown = function(e) {
 	  var indicator = $('#indicator');
 	  
-	  indicator.css('position','absolute');
+	  /*indicator.css('position','absolute');
 	  indicator.css('top','-9999px');
 	  indicator.css('left','-9999px');
-	  indicator.removeClass('tooltip-active');
+	  indicator.removeClass('tooltip-active');*/
 
 
 	};
@@ -538,7 +535,7 @@ function selectAndHighlightRange(id, start, end) {
 	 		element = $('#'+parentNode);
 	 		code = 'p_'+parentNode;
 	 		highlightedString=stripTags(getSelectionHTML());
-
+	 		string=highlightedString;
 	 		start=stripTags(element.html()).search(highlightedString);
 			end = start+highlightedString.length;
 			if((end+start) > (stripTags(element.html()).length)){
@@ -606,24 +603,50 @@ function selectAndHighlightRange(id, start, end) {
 	function positionIndicator(sel){
 		var indicator = $('#indicator');
 		if(sel || (window.getSelection() && window.getSelection()['type']=='Range')){
+			removeHighlights();
 	  		var coord=getSelectionCoords();
 	  		
 		  indicator.css('position','absolute');
 		  indicator.css('top',coord['y']-indicator.height()+'px');
 		  indicator.css('left',coord['x']+(coord['width']/4)-indicator.width()/2+'px');
 		  indicator.addClass('tooltip-active');
-		  
-		  highlightText(generateCode(sel));
+		  savedCode = generateCode(sel);
+		  highlightText(savedCode);
+
 	  }else{
-	  	  indicator.css('position','absolute');
-		  indicator.css('top','-9999px');
-		  indicator.css('left','-9999px');
-		  indicator.removeClass('tooltip-active');
+	  		savedCode = '';
+	  	  hideIndicator();
 	  }
 	}
 
+	if(window.location.hash) {
+	  // Fragment exists
+	  highlightText(window.location.hash.substring(1));
+	} else {
+	  // Fragment doesn't exist
+	  <?php
+	  	if(isset($code)){
+	  		?>
+	  		highlightText('<?php echo $code; ?>');
+	  		<?php
+	  	}
+	  ?>
+	}
+
+	function hideIndicator(){
+		var indicator = $('#indicator');
+		indicator.css('position','absolute');
+		  indicator.css('top','-9999px');
+		  indicator.css('left','-9999px');
+		  indicator.removeClass('tooltip-active');
+	}
+
+	function removeHighlights(){
+		$('.highlighted').removeAttr('style');
+		$('.highlighted').contents().unwrap();
+	}
 	//testSelectioncreate();
-	highlightText(<?php $print=(!is_null($code)) ? $code : null; echo '"'.$print.'"'; ?>);
+	
 	</script>
 <?php } 
 		echo $footer;

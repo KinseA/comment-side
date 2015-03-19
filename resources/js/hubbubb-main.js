@@ -252,3 +252,20 @@ function vote(comment){
 	return false;
 	//sends to database
 }
+
+function sendTweet(element){
+	var text,code,url,sourceURL;
+	if(string.length > 0){
+		text=string.replace(' ','+');
+		if(text.length > 97){
+			text=text.substring(0,97)+'...';
+		}
+	}
+
+	code = savedCode;
+	
+	url='https://twitter.com/intent/tweet?text='+text+'+'+window.location.href+'&via=theHubbubb';
+	window.open(url);
+	hideIndicator();
+	return false;
+}

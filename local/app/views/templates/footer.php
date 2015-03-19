@@ -153,7 +153,7 @@ pages.push('p-1');
 </script>
 <div id="indicator" class="medium-editor-toolbar">
 	<ul id="medium-editor-toolbar-actions1" class="medium-editor-toolbar-actions clearfix" style="display: block;">
-		<li><button class="medium-editor-action medium-editor-button-first"><i class="fa fa-twitter"></i>
+		<li><button class="medium-editor-action medium-editor-button-first" onclick="sendTweet(this)"><i class="fa fa-twitter"></i>
 		</button></li>
 		<li><button class="medium-editor-action add-comment"><i class="fa fa-comment"></i></button></li>
 	</ul>

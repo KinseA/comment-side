@@ -39,6 +39,7 @@ echo $header;
 					$article=$article[0];
 			?>
 					<article id="article-<?php echo $article->unique_id; ?>" >
+
 						<div class="article-content <?php $class=($article->type==1) ? 'featured-article' : 'article'; echo $class;?>">
 						
 						<?php if($article->bg_url){
