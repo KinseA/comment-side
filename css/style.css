@@ -25,7 +25,8 @@ button {
 |* ------------------------------------------------------------ *|
 \* ------------------------------------------------------------ */
 body {
-    overflow-x: hidden
+    overflow-x: hidden;
+    font-size: 18px
 }
 
 #sidebar{
@@ -50,7 +51,7 @@ section h1 {
     margin-bottom: 10px;
 }
 section p {
-    font-size: 14px;
+    font-size: 18px;
     margin-bottom: 30px
 }
 section p:last-child {
