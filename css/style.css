@@ -25,7 +25,8 @@ button {
 |* ------------------------------------------------------------ *|
 \* ------------------------------------------------------------ */
 body {
-    overflow-x: hidden
+    overflow-x: hidden;
+    font-size: 18px
 }
 
 #sidebar{
@@ -50,7 +51,7 @@ section h1 {
     margin-bottom: 10px;
 }
 section p {
-    font-size: 14px;
+    font-size: 18px;
     margin-bottom: 30px
 }
 section p:last-child {
@@ -259,6 +260,21 @@ body.pmt-open #wrapper {
 }
 body.pmb-open #wrapper {
     top: -100px
+}
+
+body{
+    background:white;
+}
+
+#when-done{
+    position:fixed;
+    top:20px;
+    left:20px;
+    width:300px;
+    padding:10px;
+    border-radius:3px;
+    border:5px solid #67b5d1;
+    background:#fff;
 }
 /* ------------------------------------------------------------ *\
 |* ------------------------------------------------------------ *|
